@@ -18,7 +18,7 @@
     <version>1.0.0</version>
 </dependency>
 ```
-2. 使用适配器传参
+2. 使用适配器重新构造
 
 ```java
 // 适配 HttpServletRequest
@@ -42,7 +42,7 @@ new JakartaResponseAdapter(HttpServletResponse);
     <version>1.0.0</version>
 </dependency>
 ```
-2. 在需要适配 `HttpRequest` 的地方，替换为
+2. 使用适配器重新构造
 
 ```java
 // 适配 HttpRequest
