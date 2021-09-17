@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>jap-http-adapter-bom</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+    <description>
+        Jap HTTP Adapter Bom
+    </description>
+
+    <parent>
+        <groupId>com.fujieid.jap.http</groupId>
+        <artifactId>jap-http-adapter</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${maven-flatten.version}</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>oss</flattenMode>
+                    <pomElements>
+                        <dependencyManagement>expand</dependencyManagement>
+                        <pluginManagement>remove</pluginManagement>
+                        <dependencies>remove</dependencies>
+                        <properties>remove</properties>
+                        <repositories>remove</repositories>
+                    </pomElements>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
