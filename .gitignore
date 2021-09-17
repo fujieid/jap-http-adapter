@@ -26,3 +26,7 @@ hs_err_pid*
 **/target
 /jap-http-adapter-bom/.flattened-pom.xml
 /.idea/
+
+
+/docs/bin/deploy.sh
+/docs/bin/codecov.sh
