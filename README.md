@@ -18,10 +18,17 @@
     <version>1.0.0</version>
 </dependency>
 ```
-2. 在需要适配 `HttpServletRequest` 的地方，替换为
+2. 使用适配器传参
 
 ```java
+// 适配 HttpServletRequest
 new JakartaRequestAdapter(HttpServletRequest);
+// 适配 Cookie
+new JakartaCookieAdapter(Cookie);
+// 适配 HttpSession
+new JakartaSessionAdapter(HttpSession);
+// 适配 HttpServletResponse
+new JakartaResponseAdapter(HttpServletResponse);
 ```
 
 ### 适配 `blade` 框架
@@ -38,5 +45,12 @@ new JakartaRequestAdapter(HttpServletRequest);
 2. 在需要适配 `HttpRequest` 的地方，替换为
 
 ```java
+// 适配 HttpRequest
 new BladeRequestAdapter(HttpRequest);
+// 适配 Cookie
+new BladeCookieAdapter(Cookie);
+// 适配 Session
+new BladeSessionAdapter(Session);
+// 适配 HttpResponse
+new BladeResponseAdapter(HttpResponse);
 ```
