@@ -1,23 +1,22 @@
-package com.fujieid.jap.http.jakarta;
+package com.fujieid.jap.http.adapter.blade;
 
+import com.blade.mvc.http.Cookie;
+import com.blade.mvc.http.HttpResponse;
 import com.fujieid.jap.http.JapHttpResponse;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 
 /**
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
  * @version 1.0.0
  * @since 1.0.0
  */
-public class JakartaResponseAdapter implements JapHttpResponse {
+public class BladeResponseAdapter implements JapHttpResponse {
 
-    private final HttpServletResponse response;
+    private final HttpResponse response;
 
-    public JakartaResponseAdapter(HttpServletResponse response) {
+    public BladeResponseAdapter(HttpResponse response) {
         this.response = response;
     }
 
@@ -57,13 +56,15 @@ public class JakartaResponseAdapter implements JapHttpResponse {
      */
     @Override
     public JapHttpResponse addCookie(String name, String value, String path, String domain, int expiry, boolean secure, boolean isHttpOnly) {
-        Cookie cookie = new Cookie(name, value);
-        cookie.setPath(path);
-        cookie.setDomain(domain);
-        cookie.setMaxAge(expiry);
-        cookie.setSecure(secure);
-        cookie.setHttpOnly(isHttpOnly);
-        this.response.addCookie(cookie);
+        Cookie cookie = new Cookie();
+        cookie.name(name);
+        cookie.value(value);
+        cookie.path(path);
+        cookie.domain(domain);
+        cookie.maxAge(expiry);
+        cookie.secure(secure);
+        cookie.httpOnly(isHttpOnly);
+        this.response.cookie(cookie);
         return this;
     }
 
@@ -75,7 +76,7 @@ public class JakartaResponseAdapter implements JapHttpResponse {
      */
     @Override
     public JapHttpResponse setStatus(int status) {
-        this.response.setStatus(status);
+        this.response.status(status);
         return this;
     }
 
@@ -88,7 +89,7 @@ public class JakartaResponseAdapter implements JapHttpResponse {
      */
     @Override
     public JapHttpResponse addHeader(String name, String value) {
-        this.response.addHeader(name, value);
+        this.response.header(name, value);
         return this;
     }
 
@@ -103,7 +104,7 @@ public class JakartaResponseAdapter implements JapHttpResponse {
      */
     @Override
     public JapHttpResponse setContentType(String contentType) {
-        this.response.setContentType(contentType);
+        this.response.contentType(contentType);
         return this;
     }
 
@@ -117,7 +118,7 @@ public class JakartaResponseAdapter implements JapHttpResponse {
      */
     @Override
     public JapHttpResponse setContentLength(int len) {
-        this.response.setContentLength(len);
+        // Don't do anything
         return this;
     }
 
@@ -128,11 +129,7 @@ public class JakartaResponseAdapter implements JapHttpResponse {
      */
     @Override
     public void write(String html) {
-        try {
-            this.response.getWriter().write(html);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.response.html(html);
     }
 
     /**
@@ -144,7 +141,7 @@ public class JakartaResponseAdapter implements JapHttpResponse {
      */
     @Override
     public String getCharacterEncoding() {
-        return this.response.getCharacterEncoding();
+        return null;
     }
 
     /**
@@ -155,7 +152,7 @@ public class JakartaResponseAdapter implements JapHttpResponse {
      */
     @Override
     public OutputStream getOutputStream() throws IOException {
-        return this.response.getOutputStream();
+        return this.response.outputStream().getRaw();
     }
 
     /**
@@ -165,10 +162,6 @@ public class JakartaResponseAdapter implements JapHttpResponse {
      */
     @Override
     public void redirect(String url) {
-        try {
-            this.response.sendRedirect(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.response.redirect(url);
     }
 }

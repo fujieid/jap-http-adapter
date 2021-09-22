@@ -1,9 +1,9 @@
-package com.fujieid.jap.http.blade;
+package com.fujieid.jap.http.adapter.jakarta;
 
-import com.blade.mvc.http.Cookie;
-import com.blade.mvc.http.HttpResponse;
 import com.fujieid.jap.http.JapHttpResponse;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -12,11 +12,11 @@ import java.io.OutputStream;
  * @version 1.0.0
  * @since 1.0.0
  */
-public class BladeResponseAdapter implements JapHttpResponse {
+public class JakartaResponseAdapter implements JapHttpResponse {
 
-    private final HttpResponse response;
+    private final HttpServletResponse response;
 
-    public BladeResponseAdapter(HttpResponse response) {
+    public JakartaResponseAdapter(HttpServletResponse response) {
         this.response = response;
     }
 
@@ -56,15 +56,13 @@ public class BladeResponseAdapter implements JapHttpResponse {
      */
     @Override
     public JapHttpResponse addCookie(String name, String value, String path, String domain, int expiry, boolean secure, boolean isHttpOnly) {
-        Cookie cookie = new Cookie();
-        cookie.name(name);
-        cookie.value(value);
-        cookie.path(path);
-        cookie.domain(domain);
-        cookie.maxAge(expiry);
-        cookie.secure(secure);
-        cookie.httpOnly(isHttpOnly);
-        this.response.cookie(cookie);
+        Cookie cookie = new Cookie(name, value);
+        cookie.setPath(path);
+        cookie.setDomain(domain);
+        cookie.setMaxAge(expiry);
+        cookie.setSecure(secure);
+        cookie.setHttpOnly(isHttpOnly);
+        this.response.addCookie(cookie);
         return this;
     }
 
@@ -76,7 +74,7 @@ public class BladeResponseAdapter implements JapHttpResponse {
      */
     @Override
     public JapHttpResponse setStatus(int status) {
-        this.response.status(status);
+        this.response.setStatus(status);
         return this;
     }
 
@@ -89,7 +87,7 @@ public class BladeResponseAdapter implements JapHttpResponse {
      */
     @Override
     public JapHttpResponse addHeader(String name, String value) {
-        this.response.header(name, value);
+        this.response.addHeader(name, value);
         return this;
     }
 
@@ -104,7 +102,7 @@ public class BladeResponseAdapter implements JapHttpResponse {
      */
     @Override
     public JapHttpResponse setContentType(String contentType) {
-        this.response.contentType(contentType);
+        this.response.setContentType(contentType);
         return this;
     }
 
@@ -118,7 +116,7 @@ public class BladeResponseAdapter implements JapHttpResponse {
      */
     @Override
     public JapHttpResponse setContentLength(int len) {
-        // Don't do anything
+        this.response.setContentLength(len);
         return this;
     }
 
@@ -129,7 +127,11 @@ public class BladeResponseAdapter implements JapHttpResponse {
      */
     @Override
     public void write(String html) {
-        this.response.html(html);
+        try {
+            this.response.getWriter().write(html);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -141,7 +143,7 @@ public class BladeResponseAdapter implements JapHttpResponse {
      */
     @Override
     public String getCharacterEncoding() {
-        return null;
+        return this.response.getCharacterEncoding();
     }
 
     /**
@@ -152,7 +154,7 @@ public class BladeResponseAdapter implements JapHttpResponse {
      */
     @Override
     public OutputStream getOutputStream() throws IOException {
-        return this.response.outputStream().getRaw();
+        return this.response.getOutputStream();
     }
 
     /**
@@ -162,6 +164,10 @@ public class BladeResponseAdapter implements JapHttpResponse {
      */
     @Override
     public void redirect(String url) {
-        this.response.redirect(url);
+        try {
+            this.response.sendRedirect(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

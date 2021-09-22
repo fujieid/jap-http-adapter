@@ -1,4 +1,4 @@
-package com.fujieid.jap.http.blade;
+package com.fujieid.jap.http.adapter.blade;
 
 import com.blade.mvc.http.Session;
 import com.fujieid.jap.http.JapHttpSession;

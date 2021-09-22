@@ -1,4 +1,4 @@
-package com.fujieid.jap.http.jakarta;
+package com.fujieid.jap.http.adapter.jakarta;
 
 import com.fujieid.jap.http.JapHttpSession;
 

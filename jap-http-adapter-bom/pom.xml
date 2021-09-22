@@ -11,7 +11,7 @@
     </description>
 
     <parent>
-        <groupId>com.fujieid.jap.http</groupId>
+        <groupId>com.fujieid.jap.http.adapter</groupId>
         <artifactId>jap-http-adapter</artifactId>
         <version>${revision}</version>
     </parent>

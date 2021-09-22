@@ -1,15 +1,13 @@
-package com.fujieid.jap.http.blade;
+package com.fujieid.jap.http.adapter.jakarta;
 
-import com.blade.mvc.http.HttpRequest;
 import com.fujieid.jap.http.JapHttpCookie;
 import com.fujieid.jap.http.JapHttpRequest;
 import com.fujieid.jap.http.JapHttpSession;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,11 +15,11 @@ import java.util.Map;
  * @version 1.0.0
  * @since 1.0.0
  */
-public class BladeRequestAdapter implements JapHttpRequest {
+public class JakartaRequestAdapter implements JapHttpRequest {
 
-    private final HttpRequest request;
+    private final HttpServletRequest request;
 
-    public BladeRequestAdapter(HttpRequest request) {
+    public JakartaRequestAdapter(HttpServletRequest request) {
         this.request = request;
     }
 
@@ -32,7 +30,7 @@ public class BladeRequestAdapter implements JapHttpRequest {
      */
     @Override
     public Object getSource() {
-        return this.request;
+        return request;
     }
 
     /**
@@ -44,8 +42,7 @@ public class BladeRequestAdapter implements JapHttpRequest {
      */
     @Override
     public String getParameter(String name) {
-        List<String> values = this.request.parameterValues(name);
-        return null == values || values.isEmpty() ? null : values.get(0);
+        return this.request.getParameter(name);
     }
 
     /**
@@ -57,7 +54,7 @@ public class BladeRequestAdapter implements JapHttpRequest {
      */
     @Override
     public String[] getParameterValues(String name) {
-        return this.request.parameterValues(name).toArray(new String[0]);
+        return this.request.getParameterValues(name);
     }
 
     /**
@@ -67,14 +64,7 @@ public class BladeRequestAdapter implements JapHttpRequest {
      */
     @Override
     public Map<String, String[]> getParameterMap() {
-        Map<String, List<String>> map = this.request.parameters();
-        Map<String, String[]> res = new HashMap<>();
-        if (null != map && !map.isEmpty()) {
-            for (Map.Entry<String, List<String>> stringListEntry : map.entrySet()) {
-                res.put(stringListEntry.getKey(), stringListEntry.getValue().toArray(new String[0]));
-            }
-        }
-        return res;
+        return this.request.getParameterMap();
     }
 
     /**
@@ -87,7 +77,7 @@ public class BladeRequestAdapter implements JapHttpRequest {
      */
     @Override
     public String getHeader(String name) {
-        return this.request.header(name);
+        return this.request.getHeader(name);
     }
 
     /**
@@ -98,7 +88,7 @@ public class BladeRequestAdapter implements JapHttpRequest {
      */
     @Override
     public String getRequestUri() {
-        return this.request.uri();
+        return this.request.getRequestURI();
     }
 
     /**
@@ -109,7 +99,7 @@ public class BladeRequestAdapter implements JapHttpRequest {
      */
     @Override
     public StringBuffer getRequestUrl() {
-        return new StringBuffer(this.request.url());
+        return this.request.getRequestURL();
     }
 
     /**
@@ -119,7 +109,7 @@ public class BladeRequestAdapter implements JapHttpRequest {
      */
     @Override
     public String getMethod() {
-        return this.request.method();
+        return this.request.getMethod();
     }
 
     /**
@@ -131,7 +121,7 @@ public class BladeRequestAdapter implements JapHttpRequest {
      */
     @Override
     public String getQueryString() {
-        return this.request.queryString();
+        return this.request.getQueryString();
     }
 
     /**
@@ -141,7 +131,7 @@ public class BladeRequestAdapter implements JapHttpRequest {
      */
     @Override
     public String getRemoteAddr() {
-        return this.request.remoteAddress();
+        return this.request.getRemoteAddr();
     }
 
     /**
@@ -155,7 +145,7 @@ public class BladeRequestAdapter implements JapHttpRequest {
      */
     @Override
     public String getServletPath() {
-        return this.request.contextPath();
+        return this.request.getServletPath();
     }
 
     /**
@@ -167,16 +157,16 @@ public class BladeRequestAdapter implements JapHttpRequest {
      */
     @Override
     public JapHttpCookie[] getCookies() {
-        Map<String, com.blade.mvc.http.Cookie> cookieMap = this.request.cookies();
-        if (null == cookieMap || cookieMap.isEmpty()) {
+        Cookie[] cookies = this.request.getCookies();
+        if (null == cookies || cookies.length == 0) {
             return null;
         }
-        List<com.blade.mvc.http.Cookie> cookies = new ArrayList<>(cookieMap.values());
-        JapHttpCookie[] res = new JapHttpCookie[cookies.size()];
-        for (int i = 0; i < cookies.size(); i++) {
-            res[i] = new BladeCookieAdapter(cookies.get(i));
+        int cookieLen = cookies.length;
+        JapHttpCookie[] japHttpCookies = new JakartaCookieAdapter[cookieLen];
+        for (int i = 0; i < cookieLen; i++) {
+            japHttpCookies[i] = new JakartaCookieAdapter(cookies[i]);
         }
-        return res;
+        return japHttpCookies;
     }
 
     /**
@@ -186,7 +176,7 @@ public class BladeRequestAdapter implements JapHttpRequest {
      */
     @Override
     public JapHttpSession getSession() {
-        return new BladeSessionAdapter(this.request.session());
+        return new JakartaSessionAdapter(this.request.getSession());
     }
 
     /**
@@ -198,6 +188,6 @@ public class BladeRequestAdapter implements JapHttpRequest {
      */
     @Override
     public BufferedReader getReader() throws IOException {
-        return null;
+        return this.request.getReader();
     }
 }
