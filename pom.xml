@@ -46,7 +46,7 @@
 
     <properties>
         <!-- jap http adapter version -->
-        <revision>1.0.1</revision>
+        <revision>1.0.2</revision>
 
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -76,12 +76,12 @@
                 <version>${jap-http-version}</version>
             </dependency>
             <dependency>
-                <groupId>com.fujieid.jap.http</groupId>
+                <groupId>com.fujieid.jap.http.adapter</groupId>
                 <artifactId>jap-http-jakarta-adapter</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>com.fujieid.jap.http</groupId>
+                <groupId>com.fujieid.jap.http.adapter</groupId>
                 <artifactId>jap-http-blade-adapter</artifactId>
                 <version>${revision}</version>
             </dependency>

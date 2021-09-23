@@ -13,9 +13,9 @@
 1. 依次引入下方依赖
 ```xml
 <dependency>
-    <groupId>com.fujieid.jap.http</groupId>
+    <groupId>com.fujieid.jap.http.adapter</groupId>
     <artifactId>jap-http-jakarta-adapter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 2. 使用适配器重新构造
@@ -37,9 +37,9 @@ new JakartaResponseAdapter(HttpServletResponse);
 
 ```xml
 <dependency>
-    <groupId>com.fujieid.jap.http</groupId>
+    <groupId>com.fujieid.jap.http.adapter</groupId>
     <artifactId>jap-http-blade-adapter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 2. 使用适配器重新构造
