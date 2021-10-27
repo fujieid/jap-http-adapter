@@ -58,7 +58,7 @@ public class JakartaResponseAdapter implements JapHttpResponse {
     public JapHttpResponse addCookie(String name, String value, String path, String domain, int expiry, boolean secure, boolean isHttpOnly) {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath(path);
-        cookie.setDomain(domain);
+        cookie.setDomain(null == domain || domain.length() == 0 ? "/" : domain);
         cookie.setMaxAge(expiry);
         cookie.setSecure(secure);
         cookie.setHttpOnly(isHttpOnly);
